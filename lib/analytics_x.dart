@@ -19,33 +19,9 @@ class AnalyticsX {
     final List<AnalyticsVendor> vendorsToUse = _filterVendors(vendorIds);
 
     for (final vendor in vendorsToUse) {
-      if (canHandleAction(vendor, action)) {
-        vendor.handleAction(action);
-      }
+      vendor.handleAction(action);
     }
   }
-
-  bool canHandleAction(AnalyticsVendor vendor, AnalyticsAction action) {
-    for (final supportedAction in vendor.supportedActions) {
-      if (supportedAction == action.runtimeType) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  // void trackEvent(String event, Map<String, String> properties, [List<String> vendorIds = ALL]) {
-  //   List<AnalyticsVendor> vendorsToUse = _filterVendors(vendorIds);
-  //
-  //   for (var vendor in vendorsToUse) {
-  //     if (vendor is AnalyticsEventProvider) {
-  //       AnalyticsEventProvider analyticsEventProvider = vendor as AnalyticsEventProvider;
-  //
-  //       analyticsEventProvider.trackEvent(event, properties);
-  //     }
-  //   }
-  // }
 
   List<AnalyticsVendor> _filterVendors(List<String> vendorIds) {
     return vendorIds == ALL ? vendors : _getVendorsById(vendorIds);
