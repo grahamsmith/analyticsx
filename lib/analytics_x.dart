@@ -3,22 +3,22 @@ library analytics_x;
 import 'package:analyticsx/analytics_action.dart';
 import 'package:analyticsx/analytics_vendor.dart';
 
-const ALL = const ['all'];
+const ALL = ['all'];
 
 class AnalyticsX {
   late List<AnalyticsVendor> vendors;
 
   void init(List<AnalyticsVendor> vendors) {
     vendors.addAll(vendors);
-    for (var vendor in vendors) {
+    for (final vendor in vendors) {
       vendor.init();
     }
   }
 
   void invokeAction(AnalyticsAction action, [List<String> vendorIds = ALL]) {
-    List<AnalyticsVendor> vendorsToUse = _filterVendors(vendorIds);
+    final List<AnalyticsVendor> vendorsToUse = _filterVendors(vendorIds);
 
-    for (var vendor in vendorsToUse) {
+    for (final vendor in vendorsToUse) {
       if (canHandleAction(vendor, action)) {
         vendor.handleAction(action);
       }
@@ -26,7 +26,7 @@ class AnalyticsX {
   }
 
   bool canHandleAction(AnalyticsVendor vendor, AnalyticsAction action) {
-    for (var supportedAction in vendor.supportedActions) {
+    for (final supportedAction in vendor.supportedActions) {
       if (supportedAction == action.runtimeType) {
         return true;
       }
