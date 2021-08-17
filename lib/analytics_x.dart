@@ -9,8 +9,8 @@ class AnalyticsX {
   late List<AnalyticsVendor> vendors;
 
   void init(List<AnalyticsVendor> vendors) {
-    vendors.addAll(vendors);
-    for (final vendor in vendors) {
+    this.vendors = List.from(vendors);
+    for (final vendor in this.vendors) {
       vendor.init();
     }
   }
