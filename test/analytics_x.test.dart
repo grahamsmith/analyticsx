@@ -3,14 +3,24 @@ import 'package:analyticsx/analytics_vendor.dart';
 import 'package:analyticsx/analytics_x.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+class FakeAction extends AnalyticsAction {
+  final String fakeProperty;
+  FakeAction(this.fakeProperty);
+}
+
 class FakeVendor extends AnalyticsVendor {
   FakeVendor() : super('Dummy');
 
   int initWasCalledXTimes = 0;
+  int handleActionWasCalledXTimes = 0;
+  List<String> handleActionWasCalledWith = [];
 
   @override
   void handleAction(AnalyticsAction action) {
-    // TODO: implement handleAction
+    handleActionWasCalledXTimes++;
+    if (action is FakeAction) {
+      handleActionWasCalledWith.add(action.fakeProperty);
+    }
   }
 
   @override
@@ -45,8 +55,9 @@ void main() {
     expect(() => ax.init([fakeVendor]), throwsException);
   });
 
-  test('Init is called', () {
-    ax = AnalyticsX()..init([fakeVendor]);
-    assert(fakeVendor.initWasCalledXTimes == 1);
+  test('Vendor handleAction is called once when invokeAction is called once', () {
+    ax.init([fakeVendor]);
+    ax.invokeAction(FakeAction("potato"));
+    expect(fakeVendor.handleActionWasCalledXTimes, 1);
   });
 }
