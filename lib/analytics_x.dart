@@ -7,8 +7,7 @@ const ALL = ['all'];
 
 class AnalyticsX {
   static final AnalyticsX _instance = AnalyticsX._internal();
-  List<AnalyticsVendor> _vendors = [];
-  bool _isInited = false;
+  final List<AnalyticsVendor> _vendors = [];
 
   factory AnalyticsX() {
     return _instance;
@@ -17,13 +16,16 @@ class AnalyticsX {
   AnalyticsX._internal();
 
   void init(List<AnalyticsVendor> vendors) {
-    if (_isInited) throw Exception('AnalyticsX has already been inited');
+    final newVendors = List.from(vendors).toSet().difference(_vendors.toSet()).toList();
+    if (newVendors.isEmpty) {
+      return;
+    }
 
-    _vendors = List.from(vendors);
-    for (final vendor in vendors) {
+    for (final vendor in newVendors) {
       vendor.init();
     }
-    _isInited = true;
+
+    _vendors.addAll(List.from(newVendors));
   }
 
   void invokeAction(AnalyticsAction action, [List<String> vendorIds = ALL]) {
@@ -40,5 +42,9 @@ class AnalyticsX {
 
   List<AnalyticsVendor> _getVendorsById(List<String> ids) {
     return _vendors.where((element) => ids.contains(element.id)).toList();
+  }
+
+  void uninit() {
+    _vendors.clear();
   }
 }

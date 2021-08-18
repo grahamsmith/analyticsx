@@ -10,6 +10,7 @@ class FakeAction extends AnalyticsAction {
 
 class FakeVendor extends AnalyticsVendor {
   FakeVendor() : super('Dummy');
+  FakeVendor.withVendorId(String vendorId) : super(vendorId);
 
   int initWasCalledXTimes = 0;
   int handleActionWasCalledXTimes = 0;
@@ -29,6 +30,10 @@ class FakeVendor extends AnalyticsVendor {
   }
 }
 
+class FakeVendor2 extends FakeVendor {
+  FakeVendor2() : super.withVendorId('Dummy2');
+}
+
 void main() {
   late FakeVendor fakeVendor;
   late AnalyticsX ax;
@@ -36,6 +41,10 @@ void main() {
   setUp(() {
     fakeVendor = FakeVendor();
     ax = AnalyticsX();
+  });
+
+  tearDown(() {
+    ax.uninit();
   });
 
   test('AnalyticsX is (probably) a singleton', () {
@@ -50,14 +59,37 @@ void main() {
     expect(fakeVendor.initWasCalledXTimes, 1);
   });
 
-  test('Analytics init throws exception when called twice', () {
+  test('Vendor init is called once when Analytics init is called twice', () {
     ax.init([fakeVendor]);
-    expect(() => ax.init([fakeVendor]), throwsException);
+    ax.init([fakeVendor]);
+    expect(fakeVendor.initWasCalledXTimes, 1);
+  });
+
+  test('First vendor init is not called again when Analytics init is called with second vendor', () {
+    ax.init([fakeVendor]);
+    final fakeVendor2 = FakeVendor2();
+    ax.init([fakeVendor2]);
+    expect(fakeVendor.initWasCalledXTimes, 1);
+  });
+
+  test('Second vendor init is called when Analytics init is called with second vendor', () {
+    ax.init([fakeVendor]);
+    final fakeVendor2 = FakeVendor2();
+    ax.init([fakeVendor2]);
+    expect(fakeVendor2.initWasCalledXTimes, 1);
   });
 
   test('Vendor handleAction is called once when invokeAction is called once', () {
     ax.init([fakeVendor]);
     ax.invokeAction(FakeAction("potato"));
     expect(fakeVendor.handleActionWasCalledXTimes, 1);
+  });
+
+  test('Correct vendor handleActions are called when invokeAction is called with vendorIds', () {
+    final fakeVendor2 = FakeVendor2();
+    ax.init([fakeVendor, fakeVendor2]);
+    ax.invokeAction(FakeAction("potato"), [fakeVendor2.id]);
+    expect(fakeVendor.handleActionWasCalledXTimes, 0);
+    expect(fakeVendor2.handleActionWasCalledXTimes, 1);
   });
 }
