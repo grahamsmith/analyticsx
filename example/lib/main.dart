@@ -1,14 +1,17 @@
+import 'package:analyticsx/actions/set_screen.dart';
 import 'package:analyticsx/actions/track_event.dart';
 import 'package:analyticsx/analytics_x.dart';
+import 'package:analyticsx/vendors/firebase.dart';
+import 'package:example/MyExampleAnalytics/example_analytics_vendor.dart';
+import 'package:example/MyExampleAnalytics/simple_counter_event.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  AnalyticsX().init([Firebase(), ExampleAnalyticsVendor()]);
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  static AnalyticsX analyticsX = AnalyticsX();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,19 +19,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(
-        title: 'Flutter Demo Home Page',
-        analytics: analyticsX,
-      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title, required this.analytics}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key) {
+    AnalyticsX().invokeAction(SetScreen('HomePage'));
+  }
 
   final String title;
-  final AnalyticsX analytics;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -39,8 +40,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      widget.analytics.invokeAction(TrackEvent('test-event', {'test-param': 'yes'}));
       _counter++;
+      AnalyticsX().invokeAction(SimpleCounterEvent('button-count', _counter));
+      AnalyticsX().invokeAction(TrackEvent('test_event', {'test-param': 'yes'}));
     });
   }
 
