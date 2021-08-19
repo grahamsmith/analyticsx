@@ -16,14 +16,13 @@ class AnalyticsX {
   AnalyticsX._internal();
 
   Future<void> init(List<AnalyticsVendor> vendors) async {
-    final newVendors = List.from(vendors).toSet().difference(_vendors.toSet()).toList();
+    final newVendors = List<AnalyticsVendor>.from(vendors)..removeWhere((v) => _vendors.contains(v));
+
     if (newVendors.isEmpty) {
       return;
     }
 
-    for (final vendor in newVendors) {
-      await vendor.init();
-    }
+    await Future.wait(newVendors.map((vendor) => vendor.init())); //Do all the inits in parallel
 
     _vendors.addAll(List.from(newVendors));
   }
@@ -31,9 +30,7 @@ class AnalyticsX {
   Future<void> invokeAction(AnalyticsAction action, [List<String> vendorIds = ALL]) async {
     final List<AnalyticsVendor> vendorsToUse = _filterVendors(vendorIds);
 
-    for (final vendor in vendorsToUse) {
-      await vendor.handleAction(action);
-    }
+    await Future.wait(vendorsToUse.map((vendor) => vendor.handleAction(action))); //Do all the actions in parallel
   }
 
   List<AnalyticsVendor> _filterVendors(List<String> vendorIds) {
