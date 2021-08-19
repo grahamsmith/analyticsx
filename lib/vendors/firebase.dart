@@ -4,19 +4,15 @@ import 'package:analyticsx/analytics_action.dart';
 import 'package:analyticsx/analytics_vendor.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-class Firebase implements AnalyticsVendor {
+class Firebase extends AnalyticsVendor {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
 
-  @override
-  String get id => 'Firebase';
+  Firebase() : super('Firebase');
 
   @override
   void init() {
     //nothing for Firebase;
   }
-
-  @override
-  List<Type> get supportedActions => [TrackEvent, SetScreen];
 
   @override
   void handleAction(AnalyticsAction action) {
