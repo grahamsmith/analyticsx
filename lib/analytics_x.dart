@@ -15,24 +15,24 @@ class AnalyticsX {
 
   AnalyticsX._internal();
 
-  void init(List<AnalyticsVendor> vendors) {
+  Future<void> init(List<AnalyticsVendor> vendors) async {
     final newVendors = List.from(vendors).toSet().difference(_vendors.toSet()).toList();
     if (newVendors.isEmpty) {
       return;
     }
 
     for (final vendor in newVendors) {
-      vendor.init();
+      await vendor.init();
     }
 
     _vendors.addAll(List.from(newVendors));
   }
 
-  void invokeAction(AnalyticsAction action, [List<String> vendorIds = ALL]) {
+  Future<void> invokeAction(AnalyticsAction action, [List<String> vendorIds = ALL]) async {
     final List<AnalyticsVendor> vendorsToUse = _filterVendors(vendorIds);
 
     for (final vendor in vendorsToUse) {
-      vendor.handleAction(action);
+      await vendor.handleAction(action);
     }
   }
 

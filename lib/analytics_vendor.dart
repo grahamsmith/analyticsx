@@ -5,6 +5,6 @@ abstract class AnalyticsVendor {
 
   AnalyticsVendor(this.id);
 
-  void init();
-  void handleAction(AnalyticsAction action);
+  Future<void> init();
+  Future<void> handleAction(AnalyticsAction action);
 }

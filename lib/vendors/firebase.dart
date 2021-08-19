@@ -10,18 +10,18 @@ class Firebase extends AnalyticsVendor {
   Firebase() : super('Firebase');
 
   @override
-  void init() {
+  Future<void> init() async {
     //nothing for Firebase;
   }
 
   @override
-  void handleAction(AnalyticsAction action) {
+  Future<void> handleAction(AnalyticsAction action) async {
     if (action is TrackEvent) {
-      analytics.logEvent(name: action.eventName, parameters: action.parameters);
+      await analytics.logEvent(name: action.eventName, parameters: action.parameters);
     }
 
     if (action is SetScreen) {
-      analytics.setCurrentScreen(screenName: action.screenName);
+      await analytics.setCurrentScreen(screenName: action.screenName);
     }
   }
 }

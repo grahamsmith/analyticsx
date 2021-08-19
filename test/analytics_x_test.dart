@@ -17,7 +17,7 @@ class FakeVendor extends AnalyticsVendor {
   List<String> handleActionWasCalledWith = [];
 
   @override
-  void handleAction(AnalyticsAction action) {
+  Future<void> handleAction(AnalyticsAction action) async {
     handleActionWasCalledXTimes++;
     if (action is FakeAction) {
       handleActionWasCalledWith.add(action.fakeProperty);
@@ -25,7 +25,7 @@ class FakeVendor extends AnalyticsVendor {
   }
 
   @override
-  void init() {
+  Future<void> init() async {
     initWasCalledXTimes++;
   }
 }
@@ -47,48 +47,48 @@ void main() {
     ax.uninit();
   });
 
-  test('AnalyticsX is (probably) a singleton', () {
+  test('AnalyticsX is (probably) a singleton', () async {
     // Whilst identical(..) proves that both variables reference the same object, you can't definitively prove that it's
     // a singleton this way, since two identical strings are optimised to use the same reference
     final ax2 = AnalyticsX();
     expect(identical(ax, ax2), true);
   });
 
-  test('Vendor init is called once when Analytics init is called once', () {
-    ax.init([fakeVendor]);
+  test('Vendor init is called once when Analytics init is called once', () async {
+    await ax.init([fakeVendor]);
     expect(fakeVendor.initWasCalledXTimes, 1);
   });
 
-  test('Vendor init is called once when Analytics init is called twice', () {
-    ax.init([fakeVendor]);
-    ax.init([fakeVendor]);
+  test('Vendor init is called once when Analytics init is called twice', () async {
+    await ax.init([fakeVendor]);
+    await ax.init([fakeVendor]);
     expect(fakeVendor.initWasCalledXTimes, 1);
   });
 
-  test('First vendor init is not called again when Analytics init is called with second vendor', () {
-    ax.init([fakeVendor]);
+  test('First vendor init is not called again when Analytics init is called with second vendor', () async {
+    await ax.init([fakeVendor]);
     final fakeVendor2 = FakeVendor2();
-    ax.init([fakeVendor2]);
+    await ax.init([fakeVendor2]);
     expect(fakeVendor.initWasCalledXTimes, 1);
   });
 
-  test('Second vendor init is called when Analytics init is called with second vendor', () {
-    ax.init([fakeVendor]);
+  test('Second vendor init is called when Analytics init is called with second vendor', () async {
+    await ax.init([fakeVendor]);
     final fakeVendor2 = FakeVendor2();
-    ax.init([fakeVendor2]);
+    await ax.init([fakeVendor2]);
     expect(fakeVendor2.initWasCalledXTimes, 1);
   });
 
-  test('Vendor handleAction is called once when invokeAction is called once', () {
-    ax.init([fakeVendor]);
-    ax.invokeAction(FakeAction("potato"));
+  test('Vendor handleAction is called once when invokeAction is called once', () async {
+    await ax.init([fakeVendor]);
+    await ax.invokeAction(FakeAction("potato"));
     expect(fakeVendor.handleActionWasCalledXTimes, 1);
   });
 
-  test('Correct vendor handleActions are called when invokeAction is called with vendorIds', () {
+  test('Correct vendor handleActions are called when invokeAction is called with vendorIds', () async {
     final fakeVendor2 = FakeVendor2();
-    ax.init([fakeVendor, fakeVendor2]);
-    ax.invokeAction(FakeAction("potato"), [fakeVendor2.id]);
+    await ax.init([fakeVendor, fakeVendor2]);
+    await ax.invokeAction(FakeAction("potato"), [fakeVendor2.id]);
     expect(fakeVendor.handleActionWasCalledXTimes, 0);
     expect(fakeVendor2.handleActionWasCalledXTimes, 1);
   });
