@@ -1,4 +1,6 @@
-# analytics_x
+# Analytics X
+
+![Build](https://github.com/grahamsmith/analyticsx/actions/workflows/main.yaml/badge.svg)
 
 Analytics solution for using multiple vendors
 
