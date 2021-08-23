@@ -2,6 +2,7 @@ include: package:lint/analysis_options.yaml
 
 analyzer:
   exclude:
+    - example/**
     - "example/lib/generated_plugin_registrant.dart"
   errors:
     todo: ignore
