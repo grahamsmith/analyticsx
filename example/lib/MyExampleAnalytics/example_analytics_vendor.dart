@@ -10,17 +10,17 @@ class ExampleAnalyticsVendor extends AnalyticsVendor {
 
   @override
   Future<void> init() async {
-    print('ExampleAnalytics has run init()');
+    //print('ExampleAnalytics has run init()');
   }
 
   @override
   Future<void> handleAction(AnalyticsAction action) async {
     if (action is TrackEvent) {
-      print('TrackEvent: ${action.eventName} with ${action.parameters}');
+      //print('TrackEvent: ${action.eventName} with ${action.parameters}');
     }
 
     if (action is SimpleCounterEvent) {
-      print('CountEvent: ${action.counterName} has count ${action.count}');
+      //print('CountEvent: ${action.counterName} has count ${action.count}');
     }
   }
 }
