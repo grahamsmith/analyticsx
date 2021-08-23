@@ -92,4 +92,10 @@ void main() {
     expect(fakeVendor.handleActionWasCalledXTimes, 0);
     expect(fakeVendor2.handleActionWasCalledXTimes, 1);
   });
+
+  test('Vendor handleAction is not called when invokeAction is called with non-existent vendorId', () async {
+    await ax.init([fakeVendor]);
+    await ax.invokeAction(FakeAction("potato"), ['NonExistentVendorId']);
+    expect(fakeVendor.handleActionWasCalledXTimes, 0);
+  });
 }
