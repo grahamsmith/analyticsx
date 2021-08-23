@@ -1,4 +1,7 @@
+import 'package:analyticsx/actions/set_analytics_collection_enabled.dart';
 import 'package:analyticsx/actions/set_screen.dart';
+import 'package:analyticsx/actions/set_user_id.dart';
+import 'package:analyticsx/actions/set_user_property.dart';
 import 'package:analyticsx/actions/track_event.dart';
 import 'package:analyticsx/analytics_action.dart';
 import 'package:analyticsx/analytics_vendor.dart';
@@ -10,18 +13,33 @@ class Firebase extends AnalyticsVendor {
   Firebase() : super('Firebase');
 
   @override
-  void init() {
+  Future<void> init() async {
     //nothing for Firebase;
   }
 
   @override
-  void handleAction(AnalyticsAction action) {
+  Future<void> handleAction(AnalyticsAction action) async {
     if (action is TrackEvent) {
-      analytics.logEvent(name: action.eventName, parameters: action.parameters);
+      await analytics.logEvent(name: action.eventName, parameters: action.parameters);
     }
 
     if (action is SetScreen) {
-      analytics.setCurrentScreen(screenName: action.screenName);
+      await analytics.setCurrentScreen(
+        screenName: action.screenName,
+        screenClassOverride: action.screenClassOverride,
+      );
+    }
+
+    if (action is SetUserId) {
+      await analytics.setUserId(action.userId);
+    }
+
+    if (action is SetUserProperty) {
+      await analytics.setUserProperty(name: action.propertyName, value: action.propertyValue);
+    }
+
+    if (action is SetAnalyticsCollectionEnabled) {
+      await analytics.setAnalyticsCollectionEnabled(action.enabled);
     }
   }
 }

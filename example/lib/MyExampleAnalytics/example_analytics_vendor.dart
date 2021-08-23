@@ -9,12 +9,12 @@ class ExampleAnalyticsVendor extends AnalyticsVendor {
   ExampleAnalyticsVendor() : super('ExampleAnalytics');
 
   @override
-  void init() {
+  Future<void> init() async {
     print('ExampleAnalytics has run init()');
   }
 
   @override
-  void handleAction(AnalyticsAction action) {
+  Future<void> handleAction(AnalyticsAction action) async {
     if (action is TrackEvent) {
       print('TrackEvent: ${action.eventName} with ${action.parameters}');
     }
