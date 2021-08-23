@@ -22,9 +22,8 @@ class AnalyticsX {
       return;
     }
 
-    await Future.wait(newVendors.map((vendor) => vendor.init())); //Do all the inits in parallel
-
-    _vendors.addAll(List.from(newVendors));
+    //Do all the inits in parallel, and add them to the list on successful completion
+    await Future.wait(newVendors.map((vendor) => vendor.init().then((_) => _vendors.add(vendor))));
   }
 
   Future<void> invokeAction(AnalyticsAction action, [List<String> vendorIds = ALL]) async {
