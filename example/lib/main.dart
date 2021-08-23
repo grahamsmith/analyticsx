@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key) {
-    AnalyticsX().invokeAction(SetScreen('HomePage'));
+    AnalyticsX().invokeAction(SetScreen('HomePage', ''));
   }
 
   final String title;
