@@ -13,7 +13,7 @@ void main() {
   });
 
   tearDown(() {
-    ax.uninit();
+    ax.reset();
   });
 
   test('AnalyticsX is (probably) a singleton', () async {
