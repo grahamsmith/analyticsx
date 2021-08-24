@@ -1,4 +1,4 @@
-import 'package:analyticsx/analytics_action.dart';
+import 'package:analyticsx/src/analytics_action.dart';
 
 class SetUserId extends AnalyticsAction {
   final String userId;
