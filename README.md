@@ -12,7 +12,7 @@ The User Experience Team / Engineering Manager / Colleague wants to use their fa
 
 Analytics X provides 2 simple constructs to allow a simpler setup:
 
-- **Analytics Vendor** - A wrapper around a Analyitcs Vendor (e.g. Firebase, MixPanel etc). Its job is to handle specific Analytic Actions. These are registered during initialisation.
+- **Analytics Vendor** - A wrapper around an analytics vendor (e.g. Firebase, MixPanel etc). Its job is to handle specific Analytics Actions. These are registered during initialisation.
 - **Analytics Action** - An object containing all the information required to perform an action. This is passed to all the vendors, which if they can handle the action will process it.
 
 ## Getting Started
