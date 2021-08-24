@@ -1,10 +1,9 @@
 include: package:lint/analysis_options.yaml
 
 analyzer:
-  exclude:
-    - example/**
   errors:
     todo: ignore
+    avoid_print: ignore
 
 linter:
   rules:

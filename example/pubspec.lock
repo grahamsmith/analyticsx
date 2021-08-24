@@ -72,7 +72,7 @@ packages:
     source: hosted
     version: "9.0.1"
   firebase_analytics:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
@@ -254,4 +254,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=2.13.0 <3.0.0"
-  flutter: ">=1.17.0"
+  flutter: ">=1.12.13+hotfix.5"
