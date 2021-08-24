@@ -2,7 +2,18 @@
 
 ![Build](https://github.com/grahamsmith/analyticsx/actions/workflows/main.yaml/badge.svg)
 
-Analytics solution for using multiple vendors
+Analytics solution for using multiple vendors.
+
+### The Problem
+
+The User Experience Team / Engineering Manager / Colleague wants to use their favourite flavour of analytics product. The problem is you already have one and you most definitely don't want to write multiple lines of code for each analytics action to cover all the vendors. Analytics is already hard enough at times.
+
+### Analytics X
+
+Analytics X provides 2 simple constructs to allow a simpler setup:
+
+- **Analytics Vendor** - A wrapper around a Analyitcs Vendor (e.g. Firebase, MixPanel etc). Its job is to handle specific Analytic Actions. These are registered during initialisation.
+- **Analytics Action** - An object containing all the information required to perform an action. This is passed to all the vendors, which if they can handle the action will process it.
 
 ## Getting Started
 
