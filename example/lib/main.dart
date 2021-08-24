@@ -1,8 +1,8 @@
 import 'package:analyticsx/actions/set_screen.dart';
 import 'package:analyticsx/actions/track_event.dart';
 import 'package:analyticsx/analytics_x.dart';
-import 'package:example/MyExampleAnalytics/example_analytics_vendor.dart';
-import 'package:example/MyExampleAnalytics/simple_counter_event.dart';
+import 'package:example/vendors/example_analytics_vendor.dart';
+import 'package:example/events/simple_counter_event.dart';
 import 'package:example/vendors/firebase.dart';
 import 'package:flutter/material.dart';
 

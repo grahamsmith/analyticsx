@@ -1,16 +1,9 @@
-# example
+# AnalyticsX Example
 
-A new Flutter project.
+Example implementation of AnalyticsX in a flutter project
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project demonstrates how AnalyticsX can be used in a Flutter project that requires events to be emitted to 
+multiple analytics vendors. It includes a Firebase implementation, shows another trivial implementation of a vendor, 
+and shows how to add additional analytics actions not provided OOTB by AnalyticsX. 
