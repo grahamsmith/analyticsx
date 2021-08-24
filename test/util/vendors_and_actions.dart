@@ -1,5 +1,4 @@
-import 'package:analyticsx/analytics_action.dart';
-import 'package:analyticsx/analytics_vendor.dart';
+import 'package:analyticsx/analytics_x.dart';
 
 class FakeAction extends AnalyticsAction {
   final String fakeProperty;

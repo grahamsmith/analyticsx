@@ -1,67 +1,17 @@
-library analytics_x;
-
-import 'package:analyticsx/analytics_action.dart';
-import 'package:analyticsx/analytics_vendor.dart';
-
-const ALL = ['all'];
-
-typedef AnalyticsError = Function(Object error, StackTrace stack);
-
-class AnalyticsX {
-  static final AnalyticsX _instance = AnalyticsX._internal();
-  final List<AnalyticsVendor> _vendors = [];
-  late AnalyticsError? onError;
-
-  factory AnalyticsX() {
-    return _instance;
-  }
-
-  AnalyticsX._internal();
-
-  Future<void> init(List<AnalyticsVendor> vendors, [AnalyticsError? onError]) async {
-    this.onError = onError;
-
-    final newVendors = List<AnalyticsVendor>.from(vendors)..removeWhere((v) => _vendors.contains(v));
-
-    if (newVendors.isEmpty) {
-      return;
-    }
-
-    //Do all the inits in parallel, and add them to the list on successful completion
-    await Future.wait(newVendors.map((vendor) => _initAndAddVendor(vendor)));
-  }
-
-  Future<void> invokeAction(AnalyticsAction action, [List<String> vendorIds = ALL]) async {
-    final List<AnalyticsVendor> vendorsToUse = _filterVendors(vendorIds);
-
-    await Future.wait(
-        vendorsToUse.map((vendor) => _handleActionSafely(vendor, action))); //Do all the actions in parallel
-  }
-
-  Future<void> _initAndAddVendor(AnalyticsVendor vendor) async {
-    try {
-      await vendor.init();
-      _vendors.add(vendor);
-    } catch (error, stack) {
-      onError?.call(error, stack);
-    }
-  }
-
-  Future<void> _handleActionSafely(AnalyticsVendor vendor, AnalyticsAction action) async {
-    try {
-      await vendor.handleAction(action);
-    } catch (error, stack) {
-      onError?.call(error, stack);
-    }
-  }
-
-  List<AnalyticsVendor> _filterVendors(List<String> vendorIds) {
-    return vendorIds == ALL ? _vendors : _getVendorsById(vendorIds);
-  }
-
-  List<AnalyticsVendor> _getVendorsById(List<String> ids) {
-    return _vendors.where((element) => ids.contains(element.id)).toList();
-  }
-
-  void reset() => _vendors.clear();
-}
+/// Analytics manager through which multiple vendors are registered and events are triggered
+///
+/// Early in the application lifecycle, vendors are registered with AnalyticsX by passing a list of [AnalyticsVendor]
+/// instances to [AnalyticsX.init], which in turn calls the init method on each [AnalyticsVendor]. The top-level init
+/// method can be called multiple times, and whilst the resultant list of vendors is cumulative, the init of each
+/// [AnalyticsVendor] will only be called once.
+///
+/// Once registered, each call to [AnalyticsX.invokeAction] is fanned out to all vendors with the accompanying
+/// [AnalyticsAction], and each [AnalyticsVendor] implementation decides how (or if) to act upon it.
+export 'src/actions/set_analytics_collection_enabled.dart';
+export 'src/actions/set_screen.dart';
+export 'src/actions/set_user_id.dart';
+export 'src/actions/set_user_property.dart';
+export 'src/actions/track_event.dart';
+export 'src/analytics_action.dart';
+export 'src/analytics_vendor.dart';
+export 'src/analytics_x.dart';

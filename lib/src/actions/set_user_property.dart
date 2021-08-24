@@ -1,4 +1,4 @@
-import 'package:analyticsx/analytics_action.dart';
+import 'package:analyticsx/src/analytics_action.dart';
 
 class SetUserProperty extends AnalyticsAction {
   final String propertyName;
