@@ -1,38 +1,7 @@
-import 'package:analyticsx/analytics_action.dart';
-import 'package:analyticsx/analytics_vendor.dart';
 import 'package:analyticsx/analytics_x.dart';
 import 'package:test/test.dart';
 
-class FakeAction extends AnalyticsAction {
-  final String fakeProperty;
-  FakeAction(this.fakeProperty);
-}
-
-class FakeVendor extends AnalyticsVendor {
-  FakeVendor() : super('Dummy');
-  FakeVendor.withVendorId(String vendorId) : super(vendorId);
-
-  int initWasCalledXTimes = 0;
-  int handleActionWasCalledXTimes = 0;
-  List<String> handleActionWasCalledWith = [];
-
-  @override
-  Future<void> handleAction(AnalyticsAction action) async {
-    handleActionWasCalledXTimes++;
-    if (action is FakeAction) {
-      handleActionWasCalledWith.add(action.fakeProperty);
-    }
-  }
-
-  @override
-  Future<void> init() async {
-    initWasCalledXTimes++;
-  }
-}
-
-class FakeVendor2 extends FakeVendor {
-  FakeVendor2() : super.withVendorId('Dummy2');
-}
+import 'util/vendors_and_actions.dart';
 
 void main() {
   late FakeVendor fakeVendor;
@@ -44,7 +13,7 @@ void main() {
   });
 
   tearDown(() {
-    ax.uninit();
+    ax.reset();
   });
 
   test('AnalyticsX is (probably) a singleton', () async {
