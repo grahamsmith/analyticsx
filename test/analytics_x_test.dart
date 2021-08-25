@@ -67,4 +67,23 @@ void main() {
     await ax.invokeAction(FakeAction("potato"), ['NonExistentVendorId']);
     expect(fakeVendor.handleActionWasCalledXTimes, 0);
   });
+
+  test('AnalyticsX only registers one of each class of AnalyticsVendor when initialised together', () async {
+    final anotherFakeVendor = FakeVendor();
+    await ax.init([fakeVendor, anotherFakeVendor]);
+    expect(AnalyticsX().allRegisteredVendors.length, 1);
+  });
+
+  test('AnalyticsX only registers one of each class of AnalyticsVendor when initialised separately', () async {
+    final anotherFakeVendor = FakeVendor();
+    await ax.init([fakeVendor]);
+    await ax.init([anotherFakeVendor]);
+    expect(AnalyticsX().allRegisteredVendors.length, 1);
+  });
+
+  test('AnalyticsX only registers one AnalyticsVendor when two implementations are given the same ID', () async {
+    final anotherFakeVendor = FakeVendorWithSameID();
+    await ax.init([fakeVendor, anotherFakeVendor]);
+    expect(AnalyticsX().allRegisteredVendors.length, 1);
+  });
 }
