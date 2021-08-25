@@ -31,6 +31,8 @@ class FakeVendor2 extends FakeVendor {
   FakeVendor2() : super.withVendorId('Dummy2');
 }
 
+class FakeVendorWithSameID extends FakeVendor {}
+
 class BrokenFakeVendor extends FakeVendor {
   bool initWillThrow = true;
   bool handleActionWillThrow = false;

@@ -38,7 +38,10 @@ class AnalyticsX {
   Future<void> init(List<AnalyticsVendor> vendors, [AnalyticsError? onError]) async {
     this.onError = onError;
 
-    final newVendors = List<AnalyticsVendor>.from(vendors)..removeWhere((v) => _vendors.contains(v));
+    final uniqueVendors = _getUniqueVendorsById(vendors);
+
+    final newVendors = List<AnalyticsVendor>.from(uniqueVendors)
+      ..removeWhere((v) => _getVendorsById([v.id]).isNotEmpty);
 
     if (newVendors.isEmpty) {
       return;
@@ -83,9 +86,23 @@ class AnalyticsX {
     return _vendors.where((element) => ids.contains(element.id)).toList();
   }
 
+  List<AnalyticsVendor> _getUniqueVendorsById(List<AnalyticsVendor> vendorList) {
+    final List<String> uniqueIds = [];
+    for (final AnalyticsVendor vendor in List.from(vendorList)) {
+      if (uniqueIds.contains(vendor.id)) {
+        vendorList.remove(vendor);
+      }
+      uniqueIds.add(vendor.id);
+    }
+    return vendorList;
+  }
+
   /// Resets the list of known vendors.
   ///
   /// Doesn't perform any additional work on the [AnalyticsVendor], but permits all vendors to be passed to [init]
   /// again and have their [AnalyticsVendor.init] method invoked.
   void reset() => _vendors.clear();
+
+  /// Fetches the list of all registered (init'd) vendors
+  List<AnalyticsVendor> get allRegisteredVendors => _vendors;
 }
