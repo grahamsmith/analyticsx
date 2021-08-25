@@ -6,7 +6,7 @@ class TrackEvent extends AnalyticsAction {
   final String eventName;
 
   /// Any parameters required or desired to accompany the event, e.g. user's analytics ID, device info, session ID
-  final Map<String, dynamic> parameters;
+  final Map<String, dynamic>? parameters;
 
-  TrackEvent(this.eventName, this.parameters);
+  TrackEvent(this.eventName, [this.parameters]);
 }

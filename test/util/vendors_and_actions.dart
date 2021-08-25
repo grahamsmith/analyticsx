@@ -55,3 +55,24 @@ class BrokenFakeVendor extends FakeVendor {
     return super.handleAction(action);
   }
 }
+
+class RecordingVendor extends AnalyticsVendor {
+  RecordingVendor() : super('Recorder');
+  Map<String, dynamic> trackEventRecordings = {};
+
+  @override
+  Future<void> init() async {
+    //Nothing to do
+  }
+
+  @override
+  Future<void> handleAction(AnalyticsAction action) async {
+    if (action is TrackEvent) {
+      _recordTrackEvent(action.eventName, action.parameters);
+    }
+  }
+
+  void _recordTrackEvent(String eventName, parameters) {
+    trackEventRecordings[eventName] = parameters;
+  }
+}
